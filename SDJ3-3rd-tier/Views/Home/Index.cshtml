@@ -1,24 +1,36 @@
 ﻿<div class="jumbotron">
-    <h1>ASP.NET</h1>
-    <p class="lead">ASP.NET is a free web framework for building great Web sites and Web applications using HTML, CSS, and JavaScript.</p>
-    <p><a href="https://asp.net" class="btn btn-primary btn-lg">Learn more &raquo;</a></p>
+    <h1>Dismantling facility</h1>
+    <p class="lead">Police Access point</p>
 </div>
+
+@if ((bool)ViewData["no_car"] == true)
+{
+<div class="alert alert-danger" role="alert">
+    No cars were found, try another VIN.
+</div>
+}
 <div class="row">
-    <div class="col-md-4">
-        <h2>Getting started</h2>
-        <p>ASP.NET Web API is a framework that makes it easy to build HTTP services that reach
-        a broad range of clients, including browsers and mobile devices. ASP.NET Web API
-        is an ideal platform for building RESTful applications on the .NET Framework.</p>
-        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301870">Learn more &raquo;</a></p>
+    <div class="col-md-8">
+        <h2>Search by Car VIN</h2>
+
+        @using (Html.BeginForm("CarSearch", "Home", FormMethod.Get))
+    {
+        <div class="form-group">
+            <label for="VIN">VIN no.</label>
+            <input type="text" name="SearchString" class="form-control" id="VIN" placeholder="Enter VIN">
+        </div>
+
+        <div class="form-group">
+            <input type="submit" value="Filter" class="btn btn-default" />
+        </div>
+}
     </div>
+
     <div class="col-md-4">
-        <h2>Get more libraries</h2>
-        <p>NuGet is a free Visual Studio extension that makes it easy to add, remove, and update libraries and tools in Visual Studio projects.</p>
-        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301871">Learn more &raquo;</a></p>
+        <h2>Factory Statistics</h2>
+        <p><b>Cars count: </b>@ViewData["carCount"]</p>
+        <p><b>Packages count: </b>@ViewData["packageCount"]</p>
+        <p><b>Pallets count: </b>@ViewData["palletCount"]</p>
+        <p><b>Parts count: </b>@ViewData["partsCount"]</p>
     </div>
-    <div class="col-md-4">
-        <h2>Web Hosting</h2>
-        <p>You can easily find a web hosting company that offers the right mix of features and price for your applications.</p>
-        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301872">Learn more &raquo;</a></p>
     </div>
-</div>
