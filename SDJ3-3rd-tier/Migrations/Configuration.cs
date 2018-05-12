@@ -16,6 +16,12 @@ namespace SDJ3_3rd_tier.Migrations
 
         protected override void Seed(SDJ3_3rd_tier.DAL.FactoryContext context)
         {
+            context.Cars.RemoveRange(context.Cars);
+            context.Parts.RemoveRange(context.Parts);
+            context.Pallets.RemoveRange(context.Pallets);
+            context.Packages.RemoveRange(context.Packages);
+
+            context.SaveChanges();
 
             for (int i = 1; i < 21; i++)
             {
