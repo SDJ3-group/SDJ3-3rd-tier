@@ -1,34 +1,47 @@
 ﻿@model SDJ3_3rd_tier.Models.Car
 
 @{
-    ViewBag.Title = "CarOverview";
+    ViewBag.Title = "Car Overview";
 }
 
-<h2>CarOverview</h2>
+<h2>Car Overview</h2>
+<hr />
 
-<div>
-    <h4>Car</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Model)
-        </dt>
+<div class="list-group">
+    <div class="list-group-item flex-column align-items-start">
+        <div class="d-flex w-100 justify-content-between mb-1">
+            <h5>
+                <b>
+                    @Html.DisplayNameFor(model => model.VIN) :
+                </b>
+                @Html.DisplayFor(model => model.VIN)
+            </h5>
+        </div>
+        <p><b>@Html.DisplayNameFor(model => model.Model) : </b>@Html.DisplayFor(model => model.Model)</p>
+        <p><b>@Html.DisplayNameFor(model => model.Weight) : </b>@Html.DisplayFor(model => model.Weight)</p>
+        <p><b>@Html.DisplayNameFor(model => model.Parts) : </b></p>
+        <div class="list-group">
+            @foreach (var part in Model.Parts)
+            {
+            <div class="list-group-item flex-column align-items-start">
+                <div class="d-flex w-100 justify-content-between mb-1">
+                    <h5>
+                        <b>
+                            @Html.DisplayNameFor(Part => part.Id) :
+                        </b>
+                        @Html.DisplayFor(Part => part.Id)
+                    </h5>
+                    <small>3 days ago</small>
+                </div>
+                <p><b>@Html.DisplayNameFor(Part => part.Name) : </b>@Html.DisplayFor(Part => part.Name)</p>
+                <p><b>@Html.DisplayNameFor(Part => part.Weight) : </b>@Html.DisplayFor(Part => part.Weight)</p>
+                <p><b>@Html.DisplayNameFor(Part => part.Package) : </b></p>
 
-        <dd>
-            @Html.DisplayFor(model => model.Model)
-        </dd>
+                <p><b>@Html.DisplayNameFor(Part => part.Pallet) : </b></p>
+            </div>
+            }
+        </div>
+        <small>3 days ago</small>
+    </div>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Weight)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Weight)
-        </dd>
-
-    </dl>
 </div>
-<p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.VIN }) |
-    @Html.ActionLink("Back to List", "Index")
-</p>

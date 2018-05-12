@@ -183,7 +183,7 @@
     <Compile Include="Areas\HelpPage\SampleGeneration\SampleDirection.cs" />
     <Compile Include="Areas\HelpPage\SampleGeneration\TextSample.cs" />
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
-    <Compile Include="Controllers\CarswebController.cs" />
+    <Compile Include="Controllers\CarsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\PackagesController.cs" />
     <Compile Include="Controllers\PalletsController.cs" />
@@ -195,6 +195,10 @@
     <Compile Include="Migrations\201804252243458_initialMigration.cs" />
     <Compile Include="Migrations\201804252243458_initialMigration.Designer.cs">
       <DependentUpon>201804252243458_initialMigration.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201805120936391_added_required.cs" />
+    <Compile Include="Migrations\201805120936391_added_required.Designer.cs">
+      <DependentUpon>201805120936391_added_required.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Car.cs" />
@@ -277,6 +281,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201804252243458_initialMigration.resx">
       <DependentUpon>201804252243458_initialMigration.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201805120936391_added_required.resx">
+      <DependentUpon>201805120936391_added_required.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

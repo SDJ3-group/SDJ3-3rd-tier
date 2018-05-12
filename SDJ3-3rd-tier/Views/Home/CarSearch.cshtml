@@ -1,13 +1,16 @@
 ﻿@model IEnumerable<SDJ3_3rd_tier.Models.Car>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Cars List";
 }
 
-<h2>Index</h2>
+<h2>Cars List</h2>
 
 <table class="table">
     <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.VIN)
+        </th>
         <th>
             @Html.DisplayNameFor(model => model.Model)
         </th>
@@ -20,13 +23,16 @@
 @foreach (var item in Model) {
     <tr>
         <td>
+            @Html.DisplayFor(modelItem => item.VIN)
+        </td>
+        <td>
             @Html.DisplayFor(modelItem => item.Model)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.Weight)
         </td>
         <td>
-            @Html.ActionLink("Details", "CarOverview", new { id=item.VIN })
+            @Html.ActionLink("Details", "CarOverview", new { id = item.VIN })
         </td>
     </tr>
 }
