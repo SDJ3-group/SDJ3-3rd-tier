@@ -64,9 +64,44 @@ namespace SDJ3_3rd_tier.Controllers
             return Ok(part);
         }
 
+        // Get: api/Cars/2/Parts/
+        [HttpGet]
+        [Route("api/Cars/{id}/Parts")]
+        public IQueryable<PartDto> GetPackageParts(String id)
+        {
+            return db.Parts.Select(AsPartDto).Where(p => p.CarId == id);
+        }
+
+        // POST: api/Cars/2/Parts
+        [Route("api/Cars/{id}/Parts")]
+        [HttpPost]
+        [ResponseType(typeof(PartDto))]
+        public async Task<IHttpActionResult> PostPart(String id, PartDto partDto)
+        {
+            Car car = await db.Cars.FindAsync(id);
+            if (car == null)
+            {
+                return NotFound();
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            Part part = this.PartFromPartDto(partDto);
+            part.Car = car;        
+
+            part = db.Parts.Add(part);
+            await db.SaveChangesAsync();
+
+            return Created("", "");
+            //return CreatedAtRoute("DefaultApi", new { id = part.Id }, partDto);
+        }
+
         // PUT: api/Cars/2/Parts/5
         [ResponseType(typeof(void))]
-        [Route("api/Cars/{id:int}/Parts/{partId:int}")]
+        [Route("api/Cars/{id}/Parts/{partId:int}")]
         [HttpPut]
         public async Task<IHttpActionResult> PutPart(int id, int partId, PartDto part)
         {
@@ -119,14 +154,22 @@ namespace SDJ3_3rd_tier.Controllers
             return StatusCode(HttpStatusCode.NoContent);
         }
 
-        // POST: api/Cars/2/Parts
-        [Route("api/Cars/{id:string}/Parts")]
-        [HttpPost]
-        [ResponseType(typeof(PartDto))]
-        public async Task<IHttpActionResult> PostPart(int id, PartDto partDto)
+        // Get: api/Packages/2/Parts/
+        [HttpGet]
+        [Route("api/Packages/{id:int}/Parts")]
+        public IQueryable<PartDto> GetPackageParts(int id)
         {
-            Car car = await db.Cars.FindAsync(id);
-            if (car == null)
+            return db.Parts.Select(AsPartDto).Where(p => p.PackageId == id);
+        }
+
+        // PUT: api/Packages/2/Parts/
+        [ResponseType(typeof(void))]
+        [Route("api/Packages/{id:int}/Parts")]
+        [HttpPut]
+        public async Task<IHttpActionResult> PutPartToPackage(int id, PackageParts packageParts)
+        {
+            Package package = await db.Packages.FindAsync(id);
+            if (package == null)
             {
                 return NotFound();
             }
@@ -136,13 +179,125 @@ namespace SDJ3_3rd_tier.Controllers
                 return BadRequest(ModelState);
             }
 
-            Part part = this.PartFromPartDto(partDto);
-            part.Car = car;        
+            var parts = db.Parts.Where(p => packageParts.Parts.Contains(p.Id));
 
-            db.Parts.Add(part);
-            await db.SaveChangesAsync();
 
-            return CreatedAtRoute("DefaultApi", new { id = part.Id }, partDto);
+            string Name = null;
+
+            foreach (Part part in parts)
+            {
+                if (String.IsNullOrEmpty(Name))
+                {
+                    Name = package.Repacking ? part.Name : part.Car.Model;
+                }
+
+                if (!Name.Equals(package.Repacking ? part.Name : part.Car.Model)) {
+                    return BadRequest("Different part");
+                }
+            }
+
+            foreach (Part part in parts)
+            {
+                part.Package = package;
+                part.PreviousPallet = part.Pallet;
+                part.Pallet = null;
+
+                db.Entry(part).State = EntityState.Modified;   
+            }
+
+            try
+            {
+                await db.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!PartExists(id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return StatusCode(HttpStatusCode.NoContent);
+        }
+
+        // Get: api/Pallete/2/Parts/
+        [HttpGet]
+        [Route("api/Pallete/{id:int}/Parts")]
+        public IQueryable<PartDto> GetPalleteParts(int id)
+        {
+            return db.Parts.Select(AsPartDto).Where(p => p.PalletId == id);
+        }
+
+        // PUT: api/Pallete/2/Parts/
+        [ResponseType(typeof(void))]
+        [Route("api/Pallete/{id:int}/Parts")]
+        [HttpPut]
+        public async Task<IHttpActionResult> PutPartToPallete(int id, PackageParts packageParts)
+        {
+            Pallet pallet = await db.Pallets.FindAsync(id);
+            if (pallet == null)
+            {
+                return NotFound();
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var parts = db.Parts.Where(p => packageParts.Parts.Contains(p.Id));
+
+
+            string Name = null;
+            double Weight = 0;
+
+            foreach (Part part in parts)
+            {
+                if (String.IsNullOrEmpty(Name))
+                {
+                    Name = part.Name;
+                }
+
+                if (!Name.Equals(part.Name))
+                {
+                    return BadRequest("Different part");
+                }
+                Weight += part.Weight;
+            }
+
+            if (Weight > pallet.MaximumCapacity)
+            {
+                return BadRequest("Exceeded maximum weight");
+            }
+
+            foreach (Part part in parts)
+            {
+                part.Pallet = pallet;
+
+                db.Entry(part).State = EntityState.Modified;
+            }
+
+            try
+            {
+                await db.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!PartExists(id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return StatusCode(HttpStatusCode.NoContent);
         }
 
         // DELETE: api/Parts/5

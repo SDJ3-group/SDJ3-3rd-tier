@@ -71,6 +71,10 @@ namespace SDJ3_3rd_tier.Controllers
 
             Package oldPackage = await db.Packages.Where(c => c.Id == id).FirstOrDefaultAsync();
 
+            if (oldPackage == null)
+            {
+                return NotFound();
+            }
 
             db.Entry(this.MergePackageDtoToPackage(package, oldPackage)).State = EntityState.Modified;
 
@@ -105,7 +109,8 @@ namespace SDJ3_3rd_tier.Controllers
             db.Packages.Add(this.PackageFromPackageDto(package));
             await db.SaveChangesAsync();
 
-            return CreatedAtRoute("DefaultApi", new { id = package.Id }, package);
+            return Created("", "");
+            //return CreatedAtRoute("DefaultApi", new { id = package.Id }, package);
         }
 
         // DELETE: api/Packages/5

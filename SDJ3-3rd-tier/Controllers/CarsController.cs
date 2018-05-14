@@ -126,7 +126,8 @@ namespace SDJ3_3rd_tier.Controllers
                 }
             }
 
-            return CreatedAtRoute("DefaultApi", new { id = car.VIN }, car);
+            return Created("", "");
+            //return CreatedAtRoute("DefaultApi", new { id = car.VIN }, car);
         }
 
         // DELETE: api/Cars/5

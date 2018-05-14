@@ -186,6 +186,7 @@
     <Compile Include="Controllers\CarsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\PackagesController.cs" />
+    <Compile Include="Controllers\PalletsController.cs" />
     <Compile Include="Controllers\PartsController.cs" />
     <Compile Include="DAL\FactoryContext.cs" />
     <Compile Include="Global.asax.cs">
@@ -203,10 +204,16 @@
     <Compile Include="Migrations\201805142147278_auto generate.Designer.cs">
       <DependentUpon>201805142147278_auto generate.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201805142247218_datachange.cs" />
+    <Compile Include="Migrations\201805142247218_datachange.Designer.cs">
+      <DependentUpon>201805142247218_datachange.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Car.cs" />
     <Compile Include="Models\DTOs\CarDto.cs" />
     <Compile Include="Models\DTOs\PackageDto.cs" />
+    <Compile Include="Models\DTOs\PackageParts.cs" />
+    <Compile Include="Models\DTOs\PalletDto.cs" />
     <Compile Include="Models\DTOs\PartDto.cs" />
     <Compile Include="Models\Package.cs" />
     <Compile Include="Models\Pallet.cs" />
@@ -295,6 +302,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201805142147278_auto generate.resx">
       <DependentUpon>201805142147278_auto generate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201805142247218_datachange.resx">
+      <DependentUpon>201805142247218_datachange.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

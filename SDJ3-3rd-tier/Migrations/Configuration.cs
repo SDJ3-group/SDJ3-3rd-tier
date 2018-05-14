@@ -23,38 +23,56 @@ namespace SDJ3_3rd_tier.Migrations
 
             context.SaveChanges();
 
-            //for (int i = 1; i < 21; i++)
-            //{
-            //    context.Cars.Add(new Models.Car
-            //    {
-            //        VIN = "VIN" + i,
-            //        Weight = 10 + 1,
-            //        Model = "Srot" + 2 % i,
-            //        Parts = new Collection<Models.Part>
-            //        {
-            //            new Models.Part
-            //            {
-            //                Id = i,
-            //                Name = "Name" + i,
-            //                Weight = 32,
-            //                Package = new Models.Package
-            //                    {
-            //                        Id = i,
-            //                        Repacking = 2%i == 1,
-            //                        Content = "Srot" + 2 % i,
-            //                    },
-            //                Pallet = new Models.Pallet
-            //                {
-            //                    Id = i,
-            //                    MaximumCapacity = 30+i,
-            //                }
-            //            }
-            //        }
-                    
-            //    });
-            //}
+            for (int i = 1; i < 21; i++)
+            {
+                context.Parts.Add(new Models.Part
+                {
+                    Name = "Name" + i,
+                    Weight = 32,
+                    Car = new Models.Car
+                    {
+                        VIN = "VIN" + i,
+                        Weight = 10 + 1,
+                        Model = "Srot" + 2 % i,
+                    }
+                });
 
-            //context.SaveChanges();
-        }
+
+                context.SaveChanges();
+            }
+
+                //for (int i = 1; i < 21; i++)
+                //{
+                //    context.Cars.Add(new Models.Car
+                //    {
+                //        VIN = "VIN" + i,
+                //        Weight = 10 + 1,
+                //        Model = "Srot" + 2 % i,
+                //        Parts = new Collection<Models.Part>
+                //        {
+                //            new Models.Part
+                //            {
+                //                Id = i,
+                //                Name = "Name" + i,
+                //                Weight = 32,
+                //                Package = new Models.Package
+                //                    {
+                //                        Id = i,
+                //                        Repacking = 2%i == 1,
+                //                        Content = "Srot" + 2 % i,
+                //                    },
+                //                Pallet = new Models.Pallet
+                //                {
+                //                    Id = i,
+                //                    MaximumCapacity = 30+i,
+                //                }
+                //            }
+                //        }
+
+                //    });
+                //}
+
+                //context.SaveChanges();
+            }
     }
 }
