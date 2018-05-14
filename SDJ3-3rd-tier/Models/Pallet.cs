@@ -11,7 +11,8 @@ namespace SDJ3_3rd_tier.Models
         [Required]
         public int Id { get; set; }
         [Required]
-        public const double MAX_WEIGHT = 12345;
+        public double MaximumCapacity = 12345;
+
 
         public virtual ICollection<Part> Parts { get; set; }
     }

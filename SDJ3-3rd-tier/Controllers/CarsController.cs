@@ -4,12 +4,15 @@ using System.Data;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Net;
 using System.Net.Http;
+using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
 using SDJ3_3rd_tier.DAL;
 using SDJ3_3rd_tier.Models;
+using SDJ3_3rd_tier.Models.DTOs;
 
 namespace SDJ3_3rd_tier.Controllers
 {
@@ -17,17 +20,35 @@ namespace SDJ3_3rd_tier.Controllers
     {
         private FactoryContext db = new FactoryContext();
 
+        private static readonly Expression<Func<Car, CarDto>> AsCarDto =
+            x => new CarDto
+            {
+                VIN = x.VIN,
+                Model = x.Model,
+                Weight = x.Weight
+            };
+
+        private static readonly Expression<Func<CarDto, Car>> AsCar =
+            x => new Car
+            {
+                VIN = x.VIN,
+                Model = x.Model,
+                Weight = x.Weight
+            };
+
+
         // GET: api/Cars
-        public IQueryable<Car> GetCars()
+        public IQueryable<CarDto> GetCars()
         {
-            return db.Cars;
+            return db.Cars.Select(AsCarDto);
         }
 
         // GET: api/Cars/5
-        [ResponseType(typeof(Car))]
-        public IHttpActionResult GetCar(string id)
+        [ResponseType(typeof(CarDto))]
+        public async Task<IHttpActionResult> GetCar(string id)
         {
-            Car car = db.Cars.Find(id);
+            CarDto car = await db.Cars.Where(c => c.VIN == id).Select(AsCarDto).FirstOrDefaultAsync();
+
             if (car == null)
             {
                 return NotFound();
@@ -38,7 +59,7 @@ namespace SDJ3_3rd_tier.Controllers
 
         // PUT: api/Cars/5
         [ResponseType(typeof(void))]
-        public IHttpActionResult PutCar(string id, Car car)
+        public async Task<IHttpActionResult> PutCar(string id, CarDto car)
         {
             if (!ModelState.IsValid)
             {
@@ -50,11 +71,18 @@ namespace SDJ3_3rd_tier.Controllers
                 return BadRequest();
             }
 
-            db.Entry(car).State = EntityState.Modified;
+            Car oldCar = await db.Cars.Where(c => c.VIN == id).FirstOrDefaultAsync();
+
+            if (oldCar == null)
+            {
+                return NotFound();
+            }
+
+            db.Entry(this.MergeCarDtoToCar(car, oldCar)).State = EntityState.Modified;
 
             try
             {
-                db.SaveChanges();
+                await db.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -72,19 +100,19 @@ namespace SDJ3_3rd_tier.Controllers
         }
 
         // POST: api/Cars
-        [ResponseType(typeof(Car))]
-        public IHttpActionResult PostCar(Car car)
+        [ResponseType(typeof(CarDto))]
+        public async Task<IHttpActionResult> PostCar(CarDto car)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            db.Cars.Add(car);
+            db.Cars.Add(this.CarFromCarDto(car));
 
             try
             {
-                db.SaveChanges();
+                await db.SaveChangesAsync();
             }
             catch (DbUpdateException)
             {
@@ -102,19 +130,19 @@ namespace SDJ3_3rd_tier.Controllers
         }
 
         // DELETE: api/Cars/5
-        [ResponseType(typeof(Car))]
-        public IHttpActionResult DeleteCar(string id)
+        [ResponseType(typeof(CarDto))]
+        public async Task<IHttpActionResult> DeleteCar(string id)
         {
-            Car car = db.Cars.Find(id);
+            Car car = await db.Cars.FindAsync(id);
             if (car == null)
             {
                 return NotFound();
             }
 
             db.Cars.Remove(car);
-            db.SaveChanges();
+            await db.SaveChangesAsync();
 
-            return Ok(car);
+            return Ok(this.CarDtoFromCar(car));
         }
 
         protected override void Dispose(bool disposing)
@@ -129,6 +157,36 @@ namespace SDJ3_3rd_tier.Controllers
         private bool CarExists(string id)
         {
             return db.Cars.Count(e => e.VIN == id) > 0;
+        }
+
+
+        private CarDto CarDtoFromCar(Car car)
+        {
+            return new CarDto
+            {
+                VIN = car.VIN,
+                Model = car.Model,
+                Weight = car.Weight
+            };
+        }
+
+        private Car CarFromCarDto(CarDto car)
+        {
+            return new Car
+            {
+                VIN = car.VIN,
+                Model = car.Model,
+                Weight = car.Weight
+            };
+        }
+
+        private Car MergeCarDtoToCar(CarDto carDto, Car car)
+        {
+            car.VIN = carDto.VIN;
+            car.Model = carDto.Model;
+            car.Weight = carDto.Weight;
+
+            return car;
         }
     }
 }

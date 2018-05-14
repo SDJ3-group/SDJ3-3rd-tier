@@ -12,6 +12,9 @@ namespace SDJ3_3rd_tier.Models
         public int Id { get; set; }
         [Required]
         public bool Repacking { get; set; }
+        [Required]
+        public String Content { get; set; }
+
 
         public virtual ICollection<Part> Parts { get; set; }
     }

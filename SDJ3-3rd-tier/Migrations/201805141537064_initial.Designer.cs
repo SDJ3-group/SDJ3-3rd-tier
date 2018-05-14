@@ -7,13 +7,13 @@ namespace SDJ3_3rd_tier.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.2.0-61023")]
-    public sealed partial class added_required : IMigrationMetadata
+    public sealed partial class initial : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(added_required));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(initial));
         
         string IMigrationMetadata.Id
         {
-            get { return "201805120936391_added_required"; }
+            get { return "201805141537064_initial"; }
         }
         
         string IMigrationMetadata.Source

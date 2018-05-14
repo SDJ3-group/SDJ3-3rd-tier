@@ -185,23 +185,23 @@
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
     <Compile Include="Controllers\CarsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\PackagesController.cs" />
-    <Compile Include="Controllers\PalletsController.cs" />
     <Compile Include="Controllers\PartsController.cs" />
     <Compile Include="DAL\FactoryContext.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201804252243458_initialMigration.cs" />
-    <Compile Include="Migrations\201804252243458_initialMigration.Designer.cs">
-      <DependentUpon>201804252243458_initialMigration.cs</DependentUpon>
+    <Compile Include="Migrations\201805141537064_initial.cs" />
+    <Compile Include="Migrations\201805141537064_initial.Designer.cs">
+      <DependentUpon>201805141537064_initial.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201805120936391_added_required.cs" />
-    <Compile Include="Migrations\201805120936391_added_required.Designer.cs">
-      <DependentUpon>201805120936391_added_required.cs</DependentUpon>
+    <Compile Include="Migrations\201805141728354_Changed_carId.cs" />
+    <Compile Include="Migrations\201805141728354_Changed_carId.Designer.cs">
+      <DependentUpon>201805141728354_Changed_carId.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Car.cs" />
+    <Compile Include="Models\DTOs\CarDto.cs" />
+    <Compile Include="Models\DTOs\PartDto.cs" />
     <Compile Include="Models\Package.cs" />
     <Compile Include="Models\Pallet.cs" />
     <Compile Include="Models\Part.cs" />
@@ -244,7 +244,9 @@
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
@@ -279,11 +281,11 @@
     <Content Include="Scripts\jquery-1.10.2.min.map" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201804252243458_initialMigration.resx">
-      <DependentUpon>201804252243458_initialMigration.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201805141537064_initial.resx">
+      <DependentUpon>201805141537064_initial.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201805120936391_added_required.resx">
-      <DependentUpon>201805120936391_added_required.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201805141728354_Changed_carId.resx">
+      <DependentUpon>201805141728354_Changed_carId.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

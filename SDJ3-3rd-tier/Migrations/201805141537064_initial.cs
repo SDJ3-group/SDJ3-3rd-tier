@@ -3,7 +3,7 @@ namespace SDJ3_3rd_tier.Migrations
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class initialMigration : DbMigration
+    public partial class initial : DbMigration
     {
         public override void Up()
         {
@@ -22,18 +22,24 @@ namespace SDJ3_3rd_tier.Migrations
                 c => new
                     {
                         Id = c.Int(nullable: false, identity: true),
-                        Name = c.String(),
+                        Name = c.String(nullable: false),
                         Weight = c.Double(nullable: false),
-                        Car_VIN = c.String(maxLength: 128),
-                        Package_Id = c.Int(),
+                        PalletId = c.Int(nullable: false),
+                        PreviusPalletId = c.Int(),
+                        PackageId = c.Int(nullable: false),
+                        Car_VIN = c.String(nullable: false, maxLength: 128),
                         Pallet_Id = c.Int(),
                     })
                 .PrimaryKey(t => t.Id)
-                .ForeignKey("dbo.Car", t => t.Car_VIN)
-                .ForeignKey("dbo.Package", t => t.Package_Id)
+                .ForeignKey("dbo.Car", t => t.Car_VIN, cascadeDelete: true)
+                .ForeignKey("dbo.Package", t => t.PackageId, cascadeDelete: true)
                 .ForeignKey("dbo.Pallet", t => t.Pallet_Id)
+                .ForeignKey("dbo.Pallet", t => t.PalletId, cascadeDelete: true)
+                .ForeignKey("dbo.Pallet", t => t.PreviusPalletId)
+                .Index(t => t.PalletId)
+                .Index(t => t.PreviusPalletId)
+                .Index(t => t.PackageId)
                 .Index(t => t.Car_VIN)
-                .Index(t => t.Package_Id)
                 .Index(t => t.Pallet_Id);
             
             CreateTable(
@@ -42,6 +48,7 @@ namespace SDJ3_3rd_tier.Migrations
                     {
                         Id = c.Int(nullable: false, identity: true),
                         Repacking = c.Boolean(nullable: false),
+                        Content = c.String(nullable: false),
                     })
                 .PrimaryKey(t => t.Id);
             
@@ -57,12 +64,16 @@ namespace SDJ3_3rd_tier.Migrations
         
         public override void Down()
         {
+            DropForeignKey("dbo.Part", "PreviusPalletId", "dbo.Pallet");
+            DropForeignKey("dbo.Part", "PalletId", "dbo.Pallet");
             DropForeignKey("dbo.Part", "Pallet_Id", "dbo.Pallet");
-            DropForeignKey("dbo.Part", "Package_Id", "dbo.Package");
+            DropForeignKey("dbo.Part", "PackageId", "dbo.Package");
             DropForeignKey("dbo.Part", "Car_VIN", "dbo.Car");
             DropIndex("dbo.Part", new[] { "Pallet_Id" });
-            DropIndex("dbo.Part", new[] { "Package_Id" });
             DropIndex("dbo.Part", new[] { "Car_VIN" });
+            DropIndex("dbo.Part", new[] { "PackageId" });
+            DropIndex("dbo.Part", new[] { "PreviusPalletId" });
+            DropIndex("dbo.Part", new[] { "PalletId" });
             DropTable("dbo.Pallet");
             DropTable("dbo.Package");
             DropTable("dbo.Part");
