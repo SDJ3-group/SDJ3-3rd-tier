@@ -9,7 +9,8 @@ namespace SDJ3_3rd_tier.Models
 {
     public class Part
     {
-        [Key, Required]
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
         [Required]
         public String Name { get; set; }

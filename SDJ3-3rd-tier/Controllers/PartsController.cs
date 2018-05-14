@@ -120,7 +120,7 @@ namespace SDJ3_3rd_tier.Controllers
         }
 
         // POST: api/Cars/2/Parts
-        [Route("api/Cars/{id:int}/Parts")]
+        [Route("api/Cars/{id:string}/Parts")]
         [HttpPost]
         [ResponseType(typeof(PartDto))]
         public async Task<IHttpActionResult> PostPart(int id, PartDto partDto)

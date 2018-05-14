@@ -8,7 +8,7 @@ namespace SDJ3_3rd_tier.Models.DTOs
 {
     public class PartDto
     {
-        [Key, Required]
+        [Key]
         public int Id { get; set; }
         [Required]
         public String Name { get; set; }
