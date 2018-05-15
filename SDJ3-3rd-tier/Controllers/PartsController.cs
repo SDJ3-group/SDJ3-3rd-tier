@@ -103,7 +103,7 @@ namespace SDJ3_3rd_tier.Controllers
         [ResponseType(typeof(void))]
         [Route("api/Cars/{id}/Parts/{partId:int}")]
         [HttpPut]
-        public async Task<IHttpActionResult> PutPart(int id, int partId, PartDto part)
+        public async Task<IHttpActionResult> PutPart(String id, int partId, PartDto part)
         {
             Car car = await db.Cars.FindAsync(id);
             if (car == null)
