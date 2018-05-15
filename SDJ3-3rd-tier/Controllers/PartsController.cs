@@ -141,7 +141,7 @@ namespace SDJ3_3rd_tier.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!PartExists(id))
+                if (!PartExists(partId))
                 {
                     return NotFound();
                 }
